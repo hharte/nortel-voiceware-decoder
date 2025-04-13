@@ -118,3 +118,6 @@ Options:
 * **Sample Rate:** Assumes a fixed 8000 Hz sample rate.
 * **PCM Scaling:** Uses a `<< 7` bit-shift for ADPCM-to-PCM scaling.
 
+## 8. Related Projects
+
+* [mm_manager](https://github.com/hharte/mm_manager) - Manager for the Nortel Millennium payphone.
