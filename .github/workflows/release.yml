@@ -1,0 +1,101 @@
+# .github/workflows/release.yml
+# GitHub Actions workflow to build the C project using CMake and upload
+# binaries as release assets when a release is published on GitHub.
+
+name: Release Build and Upload
+
+# Controls when the workflow will run
+on:
+  release:
+    types: [published] # Run only when a release is published (not pre-release)
+
+# Permissions needed for the softprops/action-gh-release action to upload assets
+permissions:
+  contents: write
+
+jobs:
+  build-release:
+    name: Build for ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        # Define the operating systems to build on
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        include:
+          # Define specific settings for each OS
+          - os: ubuntu-latest
+            asset_content_type: application/gzip
+            build_dir: build
+            exe_path: build/nortel-voiceware-decoder
+            # Define the final archive name (used in upload step)
+            archive_filename: nortel-voiceware-decoder-linux-x64-${{ github.ref_name }}.tar.gz
+            # Construct archive command directly using available context
+            archive_command: |
+              tar czvf ../nortel-voiceware-decoder-linux-x64-${{ github.ref_name }}.tar.gz nortel-voiceware-decoder
+          - os: macos-latest
+            asset_content_type: application/gzip
+            build_dir: build
+            exe_path: build/nortel-voiceware-decoder
+            # Define the final archive name (used in upload step)
+            archive_filename: nortel-voiceware-decoder-macos-x64-${{ github.ref_name }}.tar.gz
+            # Construct archive command directly using available context
+            archive_command: |
+              tar czvf ../nortel-voiceware-decoder-macos-x64-${{ github.ref_name }}.tar.gz nortel-voiceware-decoder
+          - os: windows-latest
+            asset_content_type: application/zip
+            build_dir: build
+            # CMake default for single-config generators like MSVC places executables in config subdir
+            exe_path: build/Release/nortel-voiceware-decoder.exe
+            # Define the final archive name (used in upload step)
+            archive_filename: nortel-voiceware-decoder-windows-x64-${{ github.ref_name }}.zip
+            # Construct archive command directly using available context
+            archive_command: |
+              Compress-Archive -Path Release/nortel-voiceware-decoder.exe -DestinationPath ../nortel-voiceware-decoder-windows-x64-${{ github.ref_name }}.zip
+
+    steps:
+      # 1. Checkout the repository code
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2. Setup Build Environment (Install CMake if needed)
+      - name: Install CMake (Ubuntu)
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake build-essential
+        shell: bash
+
+      - name: Install CMake (macOS)
+        if: matrix.os == 'macos-latest'
+        run: brew install cmake
+        shell: bash
+
+      # Note: Windows runners usually have Visual Studio & CMake, but ensure path if needed
+      # If CMake isn't found on Windows, you might need:
+      # - name: Add CMake to PATH (Windows)
+      #   uses: lukka/get-cmake@latest
+
+      # 3. Configure CMake
+      - name: Configure CMake
+        run: cmake -B ${{ matrix.build_dir }} -S . -DCMAKE_BUILD_TYPE=Release
+        shell: bash # Use bash for cmake configuration on all platforms for consistency here
+
+      # 4. Build the project
+      - name: Build with CMake
+        run: cmake --build ${{ matrix.build_dir }} --config Release
+        shell: bash # Use bash for cmake build on all platforms for consistency here
+
+      # 5. Archive the executable
+      - name: Archive executable
+        run: ${{ matrix.archive_command }}
+        working-directory: ${{ matrix.build_dir }} # Run archive command inside build dir
+        # Allow default shell per OS runner (PowerShell on Windows, bash/sh on Linux/macOS)
+
+      # 6. Upload the archive as a release asset
+      # Uses softprops/action-gh-release to upload to the *existing* published release
+      - name: Upload Release Asset (${{ matrix.os }})
+        uses: softprops/action-gh-release@v2
+        with:
+          # Use the exact filename defined in the matrix variable
+          files: ${{ matrix.archive_filename }}
+

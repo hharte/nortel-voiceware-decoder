@@ -1,0 +1,187 @@
+# ROM: U10_06FEN01.BIN
+
+0	0	please-insert-and-remove-your-card	# Please insert and remove your card.
+0	1	or-dial-the-number-you-are-calling	# or dial the number you are calling.
+0	2	please-remove-your-card			# Please remove your card.
+0	3	please-dial-the-number			# Please dial the number.
+0	4	try-again				# Try again.
+0	5	insert-face-down-with-the-black-strip	# Insert face down with the black strip to the left.
+0	6	please-completely-insert-your-card	# Please completely insert your card.
+0	7	please-hang-up-and-then-start-again	# Please hang up and then start again.
+0	8	please-use-a-different-card		# Please use a different card.
+0	9	your-card-is-not-valid			# Your card is not valid.
+0	10	there-is-a-problem-reading-your-card	# There is a problem reading your card.
+0	11	please-wait				# Please wait.
+0	12	thank-you				# Thank you.
+0	13	please-deposit				# Please deposit
+0	14	one-dollar-and				# one dollar and
+0	15	dollars-and				# dollars and
+0	16	one-dollar				# one dollar
+0	17	dollar					# dollar
+0	18	dialtone				# (PCM) Dialtone
+0	19	pcm19					# (PCM)
+0	20	pcm20					# (PCM)
+0	21	pcm21					# (PCM)
+0	22	pcm22					# (PCM)
+0	23	pcm23					# (PCM)
+0	24	pcm24					# (PCM)
+0	25	pcm25					# (PCM)
+0	26	pcm26					# (PCM)
+0	27	pcm27					# (PCM)
+0	28	pcm28					# (PCM)
+0	29	pcm29					# (PCM)
+0	30	pcm30					# (PCM)
+0	31	pcm31					# (PCM)
+0	32	pcm32					# (PCM)
+0	33	message_0_033				# (PCM)
+0	34	message_0_034				# (PCM)
+0	35	message_0_035				# (PCM)
+0	36	message_0_036				# (PCM)
+0	37	message_0_037				# (PCM)
+0	38	message_0_038				# (PCM)
+0	39	message_0_039				# (PCM)
+0	40	silence_6ms				# Silence (6ms) Crashes Audacity
+0	41	silence_12ms				# Silence (12ms)
+0	42	silence_19ms				# Silence (19ms)
+0	43	silence_25ms				# Silence (25ms)
+0	44	silence_31ms				# Silence (31ms)
+0	45	silence_44ms				# Silence (44ms)
+0	46	silence_62ms				# Silence (62ms)
+0	47	silence_93ms				# Silence (93ms)
+0	48	silence_125ms				# Silence (125ms)
+0	49	message_0_049				# (PCM)
+0	50	message_0_050				# (PCM)
+0	51	message_0_051				# (PCM)
+0	52	message_0_052				# (PCM)
+0	53	message_0_053				# (PCM)
+0	54	message_0_054				# (PCM)
+0	55	message_0_055				# (PCM)
+0	56	message_0_056				# (PCM)
+0	57	message_0_057				# (PCM)
+0	58	message_0_058				# (PCM)
+0	59	message_0_059				# (PCM)
+0	60	message_0_060				# (PCM)
+0	61	message_0_061				# (PCM)
+0	62	message_0_062				# (PCM)
+0	63	message_0_063				# (PCM)
+0	64	message_0_064				# (PCM)
+0	65	please-wait-while-your-caller-deposits	# Please wait while your caller deposits
+0	66	please-enter-your-pin			# Please enter your personal identification number.
+0	67	for-further-instructions		# For further instructions
+1	0	cents					# cents
+1	1	for					# for
+1	2	minutes					# minutes
+1	3	one-minute				# one minute
+1	4	more					# more
+1	5	credit					# credit
+1	6	or-deposit				# or deposit
+1	7	two					# 75 two
+1	8	three					# three
+1	9	four					# four
+1	10	five					# five
+1	11	six					# six
+1	12	seven					# seven
+1	13	eight					# eight
+1	14	nine					# nine
+1	15	ten					# ten
+1	16	eleven					# eleven
+1	17	twelve					# twelve
+1	18	thirteen				# thirteen
+1	19	fourteen				# fourteen
+1	20	fifteen					# fifteen
+1	21	five					# five
+1	22	ten					# ten
+1	23	fifteen					# fifteen
+1	24	twenty					# twenty
+1	25	twenty-five				# twenty five
+1	26	thirty					# thirty
+1	27	thirty-five				# thirty five
+1	28	forty					# forty
+1	29	forty-five				# forty five
+1	30	fifty					# fifty
+1	31	fifty-five				# fifty five
+1	32	sixty					# sixty
+1	33	sixty-five				# sixty five
+1	34	seventy					# seventy
+1	35	seventy-five				# seventy five
+1	36	eighty					# eighty
+1	37	eighty-five				# eighty five
+1	38	ninety					# ninety
+1	39	ninety-five				# ninety five
+1	40	to-leave-a-message			# to leave a message
+1	41	please-look-at-the-display		# Please look at the display
+1	42	sixteen					# sixteen
+1	43	seventeen				# seventeen
+1	44	eighteen				# eighteen
+1	45	nineteen				# nineteen
+1	46	twenty-one				# twenty one
+1	47	twenty-two				# twenty two
+2	0	message_2_000				# 
+2	1	message_2_001				# 
+2	2	message_2_002				# 
+2	3	message_2_003				# 
+2	4	message_2_004				# 
+2	5	message_2_005				# 
+2	6	message_2_006				# 
+2	7	message_2_007				# 
+2	8	message_2_008				# 
+2	9	message_2_009				# 
+2	10	message_2_010				# 
+2	11	message_2_011				# 
+2	12	message_2_012				# 
+2	13	message_2_013				# 
+2	14	message_2_014				# 
+2	15	message_2_015				# 
+2	16	message_2_016				# 
+2	17	message_2_017				# 
+2	18	message_2_018				# 
+2	19	message_2_019				# 
+3	0	message_3_000				# 
+3	1	message_3_001				# 
+3	2	message_3_002				# 
+3	3	message_3_003				# 
+3	4	message_3_004				# 
+3	5	message_3_005				# 
+3	6	message_3_006				# 
+3	7	message_3_007				# 
+3	8	message_3_008				# 
+3	9	message_3_009				# 
+3	10	message_3_010				# 
+3	11	message_3_011				# 
+3	12	message_3_012				# 
+3	13	message_3_013				# 
+3	14	message_3_014				# 
+3	15	message_3_015				# 
+3	16	message_3_016				# 
+3	17	message_3_017				# 
+3	18	message_3_018				# 
+3	19	message_3_019				# 
+3	20	message_3_020				# 
+3	21	message_3_021				# 
+3	22	message_3_022				# 
+3	23	message_3_023				# 
+3	24	message_3_024				# 
+3	25	message_3_025				# 
+3	26	message_3_026				# 
+3	27	message_3_027				# 
+3	28	message_3_028				# 
+3	29	message_3_029				# 
+3	30	message_3_030				# 
+3	31	message_3_031				# 
+3	32	message_3_032				# 
+3	33	message_3_033				# 
+3	34	message_3_034				# 
+3	35	message_3_035				# 
+3	36	message_3_036				# 
+3	37	message_3_037				# 
+3	38	message_3_038				# 
+3	39	message_3_039				# 
+3	40	message_3_040				# 
+3	41	message_3_041				# 
+3	42	message_3_042				# 
+3	43	message_3_043				# 
+3	44	message_3_044				# 
+3	45	message_3_045				# 
+3	46	message_3_046				# 
+3	47	message_3_047				# 
+3	48	message_3_048				# 

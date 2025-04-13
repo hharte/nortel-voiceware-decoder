@@ -1,0 +1,9 @@
+CMakeCache.txt
+CMakeFiles/
+Makefile
+*.BIN
+*.bin
+*.wav
+*.pcm
+cmake_install.cmake
+nortel-voiceware-decoder

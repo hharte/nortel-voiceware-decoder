@@ -1,0 +1,143 @@
+# .github/workflows/prerelease.yml
+# GitHub Actions workflow to build the C project using CMake,
+# create/update a 'latest' pre-release, and upload binaries
+# on every push to the main branch.
+
+name: Create Latest Pre-release
+
+# Controls when the workflow will run
+on:
+  push:
+    branches:
+      - main # Or your default development branch (e.g., master)
+
+# Permissions needed to create/update releases and tags
+permissions:
+  contents: write
+
+jobs:
+  # Job to build the project for different OSes
+  build:
+    name: Build for ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        # Define the operating systems to build on
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        include:
+          # Define specific settings for each OS
+          - os: ubuntu-latest
+            build_dir: build
+            exe_path: build/nortel-voiceware-decoder # Relative to repo root
+            archive_filename: nortel-voiceware-decoder-linux-x64.tar.gz # Consistent name for latest
+            # Construct archive command directly
+            archive_command: |
+              tar czvf ../nortel-voiceware-decoder-linux-x64.tar.gz nortel-voiceware-decoder
+          - os: macos-latest
+            build_dir: build
+            exe_path: build/nortel-voiceware-decoder # Relative to repo root
+            archive_filename: nortel-voiceware-decoder-macos-x64.tar.gz # Consistent name for latest
+            # Construct archive command directly
+            archive_command: |
+              tar czvf ../nortel-voiceware-decoder-macos-x64.tar.gz nortel-voiceware-decoder
+          - os: windows-latest
+            build_dir: build
+            # CMake default for single-config generators like MSVC places executables in config subdir
+            exe_path: build/Release/nortel-voiceware-decoder.exe # Relative to repo root
+            archive_filename: nortel-voiceware-decoder-windows-x64.zip # Consistent name for latest
+            # Construct archive command directly
+            archive_command: |
+              Compress-Archive -Path Release/nortel-voiceware-decoder.exe -DestinationPath ../nortel-voiceware-decoder-windows-x64.zip
+
+    steps:
+      # 1. Checkout the repository code
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetch all history for tags
+
+      # 2. Setup Build Environment (Install CMake if needed)
+      - name: Install CMake (Ubuntu)
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake build-essential git # Ensure git is present
+        shell: bash
+
+      - name: Install CMake (macOS)
+        if: matrix.os == 'macos-latest'
+        run: brew install cmake git # Ensure git is present
+        shell: bash
+
+      # 3. Configure CMake
+      - name: Configure CMake
+        run: cmake -B ${{ matrix.build_dir }} -S . -DCMAKE_BUILD_TYPE=Release
+        shell: bash
+
+      # 4. Build the project
+      - name: Build with CMake
+        run: cmake --build ${{ matrix.build_dir }} --config Release
+        shell: bash
+
+      # 5. Archive the executable
+      - name: Archive executable
+        run: ${{ matrix.archive_command }}
+        working-directory: ${{ matrix.build_dir }}
+        # Allow default shell per OS runner
+
+      # 6. Upload build artifact (for the release job)
+      - name: Upload Build Artifact (${{ matrix.os }})
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifact-${{ matrix.os }} # Unique name per OS build
+          path: ${{ matrix.archive_filename }} # Path relative to repo root
+
+  # Job to create the pre-release and upload artifacts
+  publish-prerelease:
+    name: Create/Update Latest Pre-release
+    needs: build # Run only after all build jobs succeed
+    runs-on: ubuntu-latest # Only needs to run once
+
+    steps:
+      # 1. Checkout code (Needed for git context for tag deletion)
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Ensure full history is available if needed by gh/git
+
+      # 2. Download all build artifacts
+      - name: Download all build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          # No specific name downloads all artifacts from the workflow run
+          path: artifacts # Download artifacts into an 'artifacts' directory
+
+      # 3. Delete existing 'latest' release and tag (if they exist)
+      # This ensures the new release points to the correct commit
+      - name: Delete existing latest release and tag
+        run: gh release delete latest --cleanup-tag --yes || true
+        env:
+          # The GITHUB_TOKEN is automatically available to the workflow
+          # and has the necessary permissions (contents: write)
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # 4. Create the 'latest' pre-release and upload files
+      # Since the old release/tag are gone, this will always create new ones
+      - name: Create GitHub Pre-Release (latest)
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: latest # Always use the 'latest' tag
+          name: "Latest Development Build" # Release title
+          body: | # Optional: Describe the release
+            This is an automated pre-release generated from the latest push to the main branch.
+            Commit: ${{ github.sha }}
+            **Note:** This is potentially unstable. Use official releases for production.
+          prerelease: true # Mark this as a pre-release
+          make_latest: false # Do not mark this as the "Latest" official release
+          # Specify the files to upload from the downloaded artifacts directory
+          files: |
+            artifacts/build-artifact-ubuntu-latest/nortel-voiceware-decoder-linux-x64.tar.gz
+            artifacts/build-artifact-macos-latest/nortel-voiceware-decoder-macos-x64.tar.gz
+            artifacts/build-artifact-windows-latest/nortel-voiceware-decoder-windows-x64.zip
+        env:
+           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Necessary for the action
